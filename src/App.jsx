@@ -16,24 +16,7 @@ const settings = {
 const alchemy = new Alchemy(settings);
 
 function App() {
-  const [blockNumber, setBlockNumber] = useState();
-  const [block, setBlock] = useState();
-
-  useEffect(() => {
-    async function getBlockNumber() {
-      setBlockNumber(await alchemy.core.getBlockNumber());
-    }
-    async function getBlock() {
-      const block = await alchemy.core.getTransactionReceipt(
-        "0xa5b5c975e1efff912570f77a5b7d33dca59dc6856f60f9516e193007145e9883"
-      );
-      console.log(block);
-    }
-
-    getBlockNumber();
-    getBlock();
-  });
-
+ 
   return (
     <div>
       <Routes>

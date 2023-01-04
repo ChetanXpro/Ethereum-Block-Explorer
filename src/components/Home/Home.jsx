@@ -21,6 +21,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { bgcolor } from "@mui/system";
 
 const settings = {
   apiKey: import.meta.env.VITE_ALCHEMY_API,
@@ -56,8 +57,10 @@ const Home = () => {
 
     for (let i = blockHeight; i >= blockHeight - 10; i--) {
       const block = await alchemy.core.getBlock(i);
-      const hr = new Date(block.timestamp).getHours();
-      const min = new Date(block.timestamp).getMinutes();
+      const hr = new Date(block.timestamp * 1000).getHours();
+      const min = new Date(block.timestamp * 1000).getMinutes();
+      console.log(hr);
+      // console.log(block.timestamp);
       const age = `${hr}h:${min}min`;
 
       let obj = {
@@ -69,15 +72,13 @@ const Home = () => {
       };
       data.push(obj);
 
-      // if(data.length > 2){
       const check = blocks.filter((bk) => bk.key === block.number);
-      // console.log(check.length === 0);
+
       if (check.length === 0) {
         setBlock(() => {
           return [...blocks, ...data];
         });
       }
-      // }
     }
   }
 
@@ -91,41 +92,64 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={`h-screen ${classes.main}`}>
+    <div
+      className={`h-screen flex items-center justify-center ${classes.main}`}
+    >
       {/* <div className="h-34">{blockNumber}</div> */}
-      <TableContainer className="bg-green-500" component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Block</TableCell>
-              {/* <TableCell>Age</TableCell> */}
-              <TableCell align="right">Txn</TableCell>
-              <TableCell align="right">Age</TableCell>
-              <TableCell align="right">Miner</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {blocks.map((row) => (
-              <TableRow
-                key={row.key}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell
-                  onClick={() => console.log(row.block)}
-                  component="th"
-                  scope="row"
-                >
-                  {row.block}
+      <Paper
+        sx={{
+          width: "80%",
+          height: "90%",
+          overflow: "auto",
+        }}
+      >
+        <TableContainer>
+          <Table sx={{ minWidth: 350 }} aria-label="simple table">
+            <TableHead sx={{ bgcolor: "#3f51b5" }}>
+              <TableRow>
+                <TableCell sx={{ width: 10 }}>Block</TableCell>
+                {/* <TableCell>Age</TableCell> */}
+                <TableCell sx={{ width: 10 }} align="left">
+                  Txn
                 </TableCell>
-                {/* <TableCell align="right">{row.age}</TableCell> */}
-                <TableCell align="right">{row.txn}</TableCell>
-                <TableCell align="right">{row.age}</TableCell>
-                <TableCell align="right">{row.miner}</TableCell>
+                <TableCell sx={{ width: 10 }} align="left">
+                  Age
+                </TableCell>
+                <TableCell sx={{ width: 10 }} align="left">
+                  Miner
+                </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {blocks.map((row) => (
+                <TableRow
+                  key={row.key}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    onClick={() => console.log("Clickedddddd")}
+                    sx={{ width: 10, cursor: "pointer" }}
+                    component="th"
+                    scope="row"
+                  >
+                    {row.block}
+                  </TableCell>
+
+                  <TableCell sx={{ width: 20 }} align="left">
+                    {row.txn}
+                  </TableCell>
+                  <TableCell sx={{ width: 20 }} align="left">
+                    {row.age}
+                  </TableCell>
+                  <TableCell sx={{ width: 20 }} align="left">
+                    {row.miner}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </div>
   );
 };

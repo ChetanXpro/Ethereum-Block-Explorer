@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./home.module.css";
 import { Alchemy, isHex, Network } from "alchemy-sdk";
+
 // const { keccak256 } = require("ethereum-cryptography/keccak");
 import {
   toHex,
@@ -22,6 +23,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { bgcolor } from "@mui/system";
+import { Link } from "react-router-dom";
 
 const settings = {
   apiKey: import.meta.env.VITE_ALCHEMY_API,
@@ -34,13 +36,7 @@ const Home = () => {
   const [blockNumber, setBlockNumber] = useState();
   const [blocks, setBlock] = useState([]);
 
-  function hexToDec(hexString) {
-    return parseInt(hexString, 16);
-  }
-
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
+ 
 
   const rows = [
     {
@@ -108,6 +104,7 @@ const Home = () => {
             <TableHead sx={{ bgcolor: "#3f51b5" }}>
               <TableRow>
                 <TableCell sx={{ width: 10 }}>Block</TableCell>
+
                 {/* <TableCell>Age</TableCell> */}
                 <TableCell sx={{ width: 10 }} align="left">
                   Txn
@@ -126,14 +123,16 @@ const Home = () => {
                   key={row.key}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    onClick={() => console.log("Clickedddddd")}
-                    sx={{ width: 10, cursor: "pointer" }}
-                    component="th"
-                    scope="row"
-                  >
-                    {row.block}
-                  </TableCell>
+                  <Link to={`/block/${row.block}`}>
+                    <TableCell
+                      onClick={() => console.log("Clickedddddd")}
+                      sx={{ width: 10, cursor: "pointer" }}
+                      component="th"
+                      scope="row"
+                    >
+                      {row.block}
+                    </TableCell>
+                  </Link>
 
                   <TableCell sx={{ width: 20 }} align="left">
                     {row.txn}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import "./App.css";
+import Block from "./components/Block/Block";
 import Layout from "./components/Dashboard/Layout";
 import Home from "./components/Home/Home";
 
@@ -16,12 +17,12 @@ const settings = {
 const alchemy = new Alchemy(settings);
 
 function App() {
- 
   return (
     <div>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/block/:hash" element={<Block />} />
         </Route>
       </Routes>
       {/* <div className="App">Block Number: {blockNumber}</div>
